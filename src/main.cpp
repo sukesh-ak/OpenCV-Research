@@ -5,7 +5,9 @@
       using https://github.com/jarro2783/cxxopts/ for command line parsing.
 */
 #include <iostream>
-#include "extern/cxxopts/include/cxxopts.hpp"
+#include <cxxopts.hpp>
+
+#include "version.hpp"
 
 using namespace std;
 
@@ -83,6 +85,7 @@ int main(int argc, const char* argv[])
       cout << "╔═╗╦╔╦╗╔═╗╦  ╔═╗  ╔═╗╦  ╦" << endl;
       cout << "╚═╗║║║║╠═╝║  ║╣   ║  ║  ║" << endl;
       cout << "╚═╝╩╩ ╩╩  ╩═╝╚═╝  ╚═╝╩═╝╩" << endl;
+      cout << RED << "Version: " << CmdArgsVersion << endl;
       cout << RESET ;      
       
       parse(argc, argv);
