@@ -3,6 +3,13 @@
 ```
 g++ *.cpp -o cmdargs
 ```
+or use CMAKE
+```
+# On Linux
+sudo apt update && sudo apt install cmake
+
+cd build && cmake .. && cmake --build .
+```
 
 #### Usage
 ```
