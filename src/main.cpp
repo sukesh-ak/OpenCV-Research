@@ -81,12 +81,18 @@ void parse(int argc, const char* argv[])
 
 int main(int argc, const char* argv[])
 {
+      
+#ifdef __linux__
       cout << GREEN ;
       cout << "╔═╗╦╔╦╗╔═╗╦  ╔═╗  ╔═╗╦  ╦" << endl;
       cout << "╚═╗║║║║╠═╝║  ║╣   ║  ║  ║" << endl;
       cout << "╚═╝╩╩ ╩╩  ╩═╝╚═╝  ╚═╝╩═╝╩" << endl;
-      cout << RED << "Version: " << CmdArgsVersion << endl;
       cout << RESET ;      
+#else
+      cout << "SIMPLE CLI" << endl;
+#endif      
+      cout << "Version: " << CmdArgsVersion << endl;
+
       
       parse(argc, argv);
 

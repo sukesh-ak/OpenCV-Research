@@ -8,7 +8,10 @@ or use CMAKE
 # On Linux
 sudo apt update && sudo apt install cmake
 
-cd build && cmake .. && cmake --build .
+# After git clone update the submodule using following command
+git submodule update --init --recursive
+
+mkdir build && cd build && cmake .. && cmake --build .
 ```
 
 #### Usage
