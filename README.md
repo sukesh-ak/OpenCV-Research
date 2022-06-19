@@ -5,11 +5,9 @@ g++ *.cpp -o cmdargs
 ```
 or use CMAKE
 ```
-# On Linux
+# On Linux - install g++ / cmake / gdb
+sudo apt update && sudo apt install build-essential gdb  
 sudo apt update && sudo apt install cmake
-
-# After git clone update the submodule using following command
-git submodule update --init --recursive
 
 mkdir build && cd build && cmake .. && cmake --build .
 ```
@@ -44,7 +42,5 @@ Usage:
 
 ```
 
-#### Grab cxxopts library
-```
-git submodule add https://github.com/jarro2783/cxxopts extern/cxxopts
-```
+#### Credits cxxopts library
+[Command line parser](https://github.com/jarro2783/cxxopts)
