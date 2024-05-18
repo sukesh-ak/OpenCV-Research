@@ -17,6 +17,9 @@ target_link_libraries(${OPENCV_RESEARCH_PROJECT_NAME} PUBLIC
         )
 
 message(STATUS "--------------Compile Info------------")
-message(STATUS ${OpenCV_DIR})
-message(STATUS ${VCPKG_INSTALLED_DIR})
+message(STATUS "OpenCV library status:")
+message(STATUS "    config: ${OpenCV_DIR}")
+message(STATUS "    version: ${OpenCV_VERSION}")
+message(STATUS "    libraries: ${OpenCV_LIBS}")
+message(STATUS "    include path: ${OpenCV_INCLUDE_DIRS}")
 message(STATUS "--------------Compile Info------------")

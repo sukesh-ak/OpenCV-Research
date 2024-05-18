@@ -2,6 +2,8 @@
       OpenCV-Research
       By Sukesh Ashok Kumar
 
+      Activate the default camera and prints a message on it.
+
       using https://github.com/jarro2783/cxxopts/ for command line parsing.
 */
 #include <iostream>
@@ -9,8 +11,10 @@
 
 #include "version.hpp"
 
-#include "opencv2/imgcodecs.hpp"
+#include "opencv2/core.hpp"
+#include "opencv2/imgproc.hpp"
 #include "opencv2/highgui.hpp"
+#include "opencv2/videoio.hpp"
 
 using namespace std;
 using namespace cv;
@@ -27,21 +31,15 @@ using std::cout;
 #define WHITE   "\033[37m"      /* White */
 #define BOLDBLACK   "\033[1m\033[30m"      /* Bold Black */
 
-const int alpha_slider_max = 100;
-int alpha_slider;
-double alpha;
-double beta1;
-Mat src1;
-Mat src2;
-Mat dst;
-
-static void on_trackbar( int, void* )
+void drawText(Mat & image)
 {
- alpha = (double) alpha_slider/alpha_slider_max ;
- beta1 = ( 1.0 - alpha );
- addWeighted( src1, alpha, src2, beta1, 0.0, dst);
- imshow( "Linear Blend", dst );
+    putText(image, "Hello OpenCV",
+            Point(20, 50),
+            FONT_HERSHEY_COMPLEX, 1, // font face and scale
+            Scalar(255, 255, 255), // white
+            1, LINE_AA); // line thickness and type
 }
+
 
 /*
 * Usage : ./opencvr -t "hello" -d true -n 10 -f hhh.txt -f aaa.txt
@@ -117,17 +115,32 @@ int main(int argc, const char* argv[])
       
       parse(argc, argv);
 
-      src1 = imread( samples::findFile("linux.jpg") );
-      src2 = imread( samples::findFile("windows.jpg") );
-      if( src1.empty() ) { cout << "Error loading src1 \n"; return -1; }
-      if( src2.empty() ) { cout << "Error loading src2 \n"; return -1; }
-      alpha_slider = 0;
-      namedWindow("Linear Blend", WINDOW_AUTOSIZE); // Create Window
-      char TrackbarName[50];
-      sprintf( TrackbarName, "Alpha x %d", alpha_slider_max );
-      createTrackbar( TrackbarName, "Linear Blend", &alpha_slider, alpha_slider_max, on_trackbar );
-      on_trackbar( alpha_slider, 0 );
-      waitKey(0);
+      cout << "Built with OpenCV " << CV_VERSION << endl;
+      Mat image;
+      VideoCapture capture;
+      capture.open(0);
+      if(capture.isOpened())
+      {
+            cout << "Capture is opened" << endl;
+            for(;;)
+            {
+            capture >> image;
+            if(image.empty())
+                  break;
+            drawText(image);
+            imshow("Sample", image);
+            if(waitKey(10) >= 0)
+                  break;
+            }
+      }
+      else
+      {
+            cout << "No capture" << endl;
+            image = Mat::zeros(480, 640, CV_8UC1);
+            drawText(image);
+            imshow("Sample", image);
+            waitKey(0);
+      }
 
   return 0;
 }
