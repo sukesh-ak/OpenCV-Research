@@ -1,14 +1,14 @@
-#ifndef CMDARGS_VERSION_H_
-#define CMDARGS_VERSION_H_
+#ifndef OPENCV_RESEARCH_VERSION_H_
+#define OPENCV_RESEARCH_VERSION_H_
 
 // clang-format off
 
-constexpr auto CmdArgsMajorVersion = @CMDARGS_VERSION_MAJOR@;
-constexpr auto CmdArgsMinorVersion = @CMDARGS_VERSION_MINOR@;
-constexpr auto CmdArgsPatchVersion = @CMDARGS_VERSION_PATCH@;
+constexpr auto OpencvRMajorVersion = @OPENCV_RESEARCH_VERSION_MAJOR@;
+constexpr auto OpencvRMinorVersion = @OPENCV_RESEARCH_VERSION_MINOR@;
+constexpr auto OpencvRPatchVersion = @OPENCV_RESEARCH_VERSION_PATCH@;
 
-constexpr auto CmdArgsVersion = "@CMDARGS_VERSION@";
+constexpr auto OpencvRVersion = "@OPENCV_RESEARCH_VERSION@";
 
 // clang-format on
 
-#endif  // CMDARGS_VERSION_H_
+#endif  // OPENCV_RESEARCH_VERSION_H_

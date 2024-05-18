@@ -33,4 +33,5 @@
 
 # Build folder
 build/*
+vcpkg_installed/*
 

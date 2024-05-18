@@ -1,0 +1,28 @@
+{
+  "name": "opencv-research",
+  "version-string": "0.0.1",
+  "dependencies": [
+    {
+      "name": "opencv4",
+      "platform": "windows",
+      "default-features": true,
+      "features": [
+        "jpeg",
+        "png",
+        "ffmpeg",
+        "tiff",
+        "openmp",
+        "gstreamer",
+        "freetype"
+      ]
+    },
+    {
+    "name": "opencv4",
+    "platform": "linux",
+    "default-features": true,
+    "features": [
+      "world"
+      ]
+    }
+  ]
+}
