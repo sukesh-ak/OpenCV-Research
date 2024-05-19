@@ -8,34 +8,34 @@ using namespace std;
 using namespace cv;
 using std::cout;
 
-void drawText(Mat & image)
+void drawText(Mat &image)
 {
-    putText(image, "Hello OpenCV",
-            Point(20, 50),
-            FONT_HERSHEY_COMPLEX, 1, // font face and scale
-            Scalar(255, 255, 255), // white
-            1, LINE_AA); // line thickness and type
+      putText(image, "Hello OpenCV",
+              Point(20, 50),
+              FONT_HERSHEY_COMPLEX, 1, // font face and scale
+              Scalar(255, 255, 255),   // white
+              1, LINE_AA);             // line thickness and type
 }
 
-void textOverlay() 
+void textOverlay()
 {
       cout << "Built with OpenCV " << CV_VERSION << endl;
       Mat image;
       VideoCapture capture;
-      capture.open(0);     // capture.open(0,CAP_V4L2);
+      capture.open(0); // capture.open(0,CAP_V4L2);
 
-      if(capture.isOpened())
+      if (capture.isOpened())
       {
             cout << "Capture is opened" << endl;
-            for(;;)
+            for (;;)
             {
-            capture >> image;
-            if(image.empty())
-                  break;
-            drawText(image);
-            imshow("Sample", image);
-            if(waitKey(10) >= 0)
-                  break;
+                  capture >> image;
+                  if (image.empty())
+                        break;
+                  drawText(image);
+                  imshow("Sample", image);
+                  if (waitKey(10) >= 0)
+                        break;
             }
       }
       else

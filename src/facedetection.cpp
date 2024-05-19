@@ -9,28 +9,28 @@ using namespace cv;
 
 const string WindowName = "Face Detection Demo";
 
-class CascadeDetectorAdapter: public DetectionBasedTracker::IDetector
+class CascadeDetectorAdapter : public DetectionBasedTracker::IDetector
 {
-    public:
-        CascadeDetectorAdapter(cv::Ptr<cv::CascadeClassifier> detector):
-            IDetector(),
-            Detector(detector)
-        {
-            CV_Assert(detector);
-        }
+public:
+    CascadeDetectorAdapter(cv::Ptr<cv::CascadeClassifier> detector) : IDetector(),
+                                                                      Detector(detector)
+    {
+        CV_Assert(detector);
+    }
 
-        void detect(const cv::Mat &Image, std::vector<cv::Rect> &objects) CV_OVERRIDE
-        {
-            Detector->detectMultiScale(Image, objects, scaleFactor, minNeighbours, 0, minObjSize, maxObjSize);
-        }
+    void detect(const cv::Mat &Image, std::vector<cv::Rect> &objects) CV_OVERRIDE
+    {
+        Detector->detectMultiScale(Image, objects, scaleFactor, minNeighbours, 0, minObjSize, maxObjSize);
+    }
 
-        virtual ~CascadeDetectorAdapter() CV_OVERRIDE
-        {}
+    virtual ~CascadeDetectorAdapter() CV_OVERRIDE
+    {
+    }
 
-    private:
-        CascadeDetectorAdapter();
-        cv::Ptr<cv::CascadeClassifier> Detector;
- };
+private:
+    CascadeDetectorAdapter();
+    cv::Ptr<cv::CascadeClassifier> Detector;
+};
 
 int faceDetect()
 {
@@ -47,18 +47,18 @@ int faceDetect()
     std::string cascadeFrontalfilename = samples::findFile("data/lbpcascades/lbpcascade_frontalface.xml");
     cv::Ptr<cv::CascadeClassifier> cascade = makePtr<cv::CascadeClassifier>(cascadeFrontalfilename);
     cv::Ptr<DetectionBasedTracker::IDetector> MainDetector = makePtr<CascadeDetectorAdapter>(cascade);
-    if ( cascade->empty() )
+    if (cascade->empty())
     {
-      printf("Error: Cannot load %s\n", cascadeFrontalfilename.c_str());
-      return 2;
+        printf("Error: Cannot load %s\n", cascadeFrontalfilename.c_str());
+        return 2;
     }
 
     cascade = makePtr<cv::CascadeClassifier>(cascadeFrontalfilename);
     cv::Ptr<DetectionBasedTracker::IDetector> TrackingDetector = makePtr<CascadeDetectorAdapter>(cascade);
-    if ( cascade->empty() )
+    if (cascade->empty())
     {
-      printf("Error: Cannot load %s\n", cascadeFrontalfilename.c_str());
-      return 2;
+        printf("Error: Cannot load %s\n", cascadeFrontalfilename.c_str());
+        return 2;
     }
 
     DetectionBasedTracker::Parameters params;
@@ -83,7 +83,7 @@ int faceDetect()
 
         for (size_t i = 0; i < Faces.size(); i++)
         {
-            rectangle(ReferenceFrame, Faces[i], Scalar(0,255,0));
+            rectangle(ReferenceFrame, Faces[i], Scalar(0, 255, 0));
         }
 
         imshow(WindowName, ReferenceFrame);

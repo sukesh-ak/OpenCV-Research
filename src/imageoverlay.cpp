@@ -1,47 +1,56 @@
 
 #include "imageoverlay.hpp"
 
-void overlayImage(const cv::Mat &background, const cv::Mat &foreground, 
-                  cv::Mat &output, cv::Point2i location) {
+void overlayImage(const cv::Mat &background, const cv::Mat &foreground,
+                  cv::Mat &output, cv::Point2i location)
+{
     background.copyTo(output);
 
-    for (int y = std::max(location.y, 0); y < background.rows; ++y) {
+    for (int y = std::max(location.y, 0); y < background.rows; ++y)
+    {
         int fY = y - location.y;
 
-        if (fY >= foreground.rows) {
+        if (fY >= foreground.rows)
+        {
             break;
         }
 
-        for (int x = std::max(location.x, 0); x < background.cols; ++x) {
+        for (int x = std::max(location.x, 0); x < background.cols; ++x)
+        {
             int fX = x - location.x;
 
-            if (fX >= foreground.cols) {
+            if (fX >= foreground.cols)
+            {
                 break;
             }
 
             double opacity = ((double)foreground.data[fY * foreground.step + fX * foreground.channels() + 3]) / 255.;
 
-            for (int c = 0; opacity > 0 && c < output.channels(); ++c) {
-                unsigned char foregroundPx = 
+            for (int c = 0; opacity > 0 && c < output.channels(); ++c)
+            {
+                unsigned char foregroundPx =
                     foreground.data[fY * foreground.step + fX * foreground.channels() + c];
-                unsigned char backgroundPx = 
+                unsigned char backgroundPx =
                     background.data[y * background.step + x * background.channels() + c];
-                output.data[y*output.step + output.channels()*x + c] = 
-                    backgroundPx * (1.-opacity) + foregroundPx * opacity;
+                output.data[y * output.step + output.channels() * x + c] =
+                    backgroundPx * (1. - opacity) + foregroundPx * opacity;
             }
         }
     }
 }
 
-int imageOverlay() {
+int imageOverlay()
+{
     cv::VideoCapture cap(0);
-    if (!cap.isOpened()) {
+    if (!cap.isOpened())
+    {
         std::cerr << "Error opening video stream" << std::endl;
         return -1;
     }
 
     cv::Mat overlay = cv::imread("assets/opencv.png", cv::IMREAD_UNCHANGED);
-    if (overlay.empty()) {
+    if (overlay.empty())
+    {
         std::cerr << "Error loading overlay image" << std::endl;
         return -1;
     }
@@ -49,9 +58,11 @@ int imageOverlay() {
     cv::Mat frame;
     cv::Mat result;
 
-    while (true) {
+    while (true)
+    {
         cap >> frame;
-        if (frame.empty()) {
+        if (frame.empty())
+        {
             break;
         }
 
@@ -62,7 +73,8 @@ int imageOverlay() {
 
         cv::imshow("Camera Stream", result);
 
-        if (cv::waitKey(1) == 'q') {
+        if (cv::waitKey(1) == 'q')
+        {
             break;
         }
     }

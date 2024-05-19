@@ -21,7 +21,13 @@
     "platform": "linux",
     "default-features": true,
     "features": [
-      "world"
+      "jpeg",
+      "png",
+      "ffmpeg",
+      "tiff",
+      "openmp",
+      "gstreamer",
+      "freetype"
       ]
     }
   ]
