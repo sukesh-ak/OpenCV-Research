@@ -12,6 +12,7 @@
 
 #include "textoverlay.hpp"
 #include "drawoverlay.hpp"
+#include "imageoverlay.hpp"
 #include "facedetection.hpp"
 
 using namespace std;
@@ -38,7 +39,7 @@ void parse(int argc, const char* argv[])
       cxxopts::Options options("opencvr", "CLI with arguments");
 
       options.add_options("Demo Group")
-            ("v,verb", "Verb - textcam, shapes", cxxopts::value<string>())
+            ("v,verb", "Verb - textcam, shape, detect, imgcam", cxxopts::value<string>())
             ("demotype", "Demo Type", cxxopts::value<string>())
             ("h,help", "Print usage")
       ;
@@ -78,7 +79,8 @@ void parse(int argc, const char* argv[])
 
             // Different options with VERBS
             if      (verbvalue == "textcam")      { textOverlay(); }    // Draw Text on Default Camera
-            else if (verbvalue == "shapes")       { drawOverlay() ;}    // Draw Shapes in a window
+            else if (verbvalue == "shape")       { drawOverlay() ;}    // Draw Shapes in a window
+            else if (verbvalue == "imgcam")       { imageOverlay() ;}    // Draw Shapes in a window
             else if (verbvalue == "detect")       { faceDetect() ;}     // Detect face on camera
 
             

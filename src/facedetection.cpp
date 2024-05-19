@@ -7,7 +7,7 @@
 using namespace std;
 using namespace cv;
 
-const string WindowName = "Face Detection example";
+const string WindowName = "Face Detection Demo";
 
 class CascadeDetectorAdapter: public DetectionBasedTracker::IDetector
 {

@@ -2,6 +2,7 @@ add_executable(${OPENCV_RESEARCH_PROJECT_NAME}
         ${OPENCV_RESEARCH_SRC_DIR}/main.cpp
         ${OPENCV_RESEARCH_SRC_DIR}/textoverlay.cpp
         ${OPENCV_RESEARCH_SRC_DIR}/drawoverlay.cpp
+        ${OPENCV_RESEARCH_SRC_DIR}/imageoverlay.cpp
         ${OPENCV_RESEARCH_SRC_DIR}/facedetection.cpp
         )
 
