@@ -2,23 +2,19 @@
       OpenCV-Research
       By Sukesh Ashok Kumar
 
-      Activate the default camera and prints a message on it.
+      Relevant OpenCV examples for Vision AI
 
       using https://github.com/jarro2783/cxxopts/ for command line parsing.
 */
 #include <iostream>
 #include <cxxopts.hpp>
-
 #include "version.hpp"
 
-#include "opencv2/core.hpp"
-#include "opencv2/imgproc.hpp"
-#include "opencv2/highgui.hpp"
-#include "opencv2/videoio.hpp"
+#include "textoverlay.hpp"
+#include "drawoverlay.hpp"
+#include "facedetection.hpp"
 
 using namespace std;
-using namespace cv;
-using std::cout;
 
 #define RESET   "\033[0m"
 #define BLACK   "\033[30m"      /* Black */
@@ -31,16 +27,6 @@ using std::cout;
 #define WHITE   "\033[37m"      /* White */
 #define BOLDBLACK   "\033[1m\033[30m"      /* Bold Black */
 
-void drawText(Mat & image)
-{
-    putText(image, "Hello OpenCV",
-            Point(20, 50),
-            FONT_HERSHEY_COMPLEX, 1, // font face and scale
-            Scalar(255, 255, 255), // white
-            1, LINE_AA); // line thickness and type
-}
-
-
 /*
 * Usage : ./opencvr -t "hello" -d true -n 10 -f hhh.txt -f aaa.txt
 * Usage : ./opencvr -h
@@ -49,26 +35,54 @@ void parse(int argc, const char* argv[])
 {
    try
    {
-      cxxopts::Options options("cmdargs", "CLI with arguments");
+      cxxopts::Options options("opencvr", "CLI with arguments");
 
-      options.add_options()
-            ("t,textvalue", "Param text value", cxxopts::value<string>())
-            ("d,debug", "Enable debugging", cxxopts::value<bool>()->default_value("false"))
-            ("n,number", "Param number", cxxopts::value<int>()->default_value("11"))
-            ("f,file", "File", cxxopts::value<std::vector<std::string>>(), "FILE")
+      options.add_options("Demo Group")
+            ("v,verb", "Verb - textcam, shapes", cxxopts::value<string>())
+            ("demotype", "Demo Type", cxxopts::value<string>())
             ("h,help", "Print usage")
       ;
 
+      options.add_options("Group2")
+            ("t,textvalue", "Param text value", cxxopts::value<string>())
+            ("d,debug", "Enable debugging", cxxopts::value<bool>()->default_value("false"))
+            ("n,number", "Param number", cxxopts::value<int>()->default_value("11"))
+            ("f,file", "File - comma separated", cxxopts::value<std::vector<std::string>>(), "FILE")
+      ;
+
+      // Positional for verb to be first argument
+      options.parse_positional({"verb"});
+      options.custom_help("<VERB>");
+      options.positional_help("<parameters>");
+
+      //options.group_help("Overlay");
+      
       auto result = options.parse(argc, argv);
 
+      // Show help
       if (result.count("help"))
       {
             cout << options.help() << endl;
             exit(0);
       }
 
+      // Enable debug output
       bool debug = result["debug"].as<bool>();
       cout << "debug: " << debug << endl;
+
+      string verbvalue;
+      if (result.count("verb"))
+      {
+            verbvalue = result["verb"].as<string>();
+            cout << "Verb: " << verbvalue << endl;
+
+            // Different options with VERBS
+            if      (verbvalue == "textcam")      { textOverlay(); }    // Draw Text on Default Camera
+            else if (verbvalue == "shapes")       { drawOverlay() ;}    // Draw Shapes in a window
+            else if (verbvalue == "detect")       { faceDetect() ;}     // Detect face on camera
+
+            
+      }
 
       string textvalue;
       if (result.count("textvalue"))
@@ -91,7 +105,7 @@ void parse(int argc, const char* argv[])
       }
 
    }
-   catch (const cxxopts::OptionException& e)
+   catch (const cxxopts::exceptions::exception& e)
    {
       std::cout << "error parsing options: " << e.what() << endl;
       exit(1);
@@ -111,36 +125,8 @@ int main(int argc, const char* argv[])
       cout << "Built with OpenCV " << CV_VERSION << endl;
 #endif      
       cout << "Version: " << OpencvRVersion << endl;
-
       
       parse(argc, argv);
-
-      cout << "Built with OpenCV " << CV_VERSION << endl;
-      Mat image;
-      VideoCapture capture;
-      capture.open(0);
-      if(capture.isOpened())
-      {
-            cout << "Capture is opened" << endl;
-            for(;;)
-            {
-            capture >> image;
-            if(image.empty())
-                  break;
-            drawText(image);
-            imshow("Sample", image);
-            if(waitKey(10) >= 0)
-                  break;
-            }
-      }
-      else
-      {
-            cout << "No capture" << endl;
-            image = Mat::zeros(480, 640, CV_8UC1);
-            drawText(image);
-            imshow("Sample", image);
-            waitKey(0);
-      }
 
   return 0;
 }
