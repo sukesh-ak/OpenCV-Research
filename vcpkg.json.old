@@ -1,6 +1,6 @@
 {
   "name": "opencv-research",
-  "version-string": "0.0.1",
+  "version-string": "0.0.3",
   "dependencies": [
     {
       "name": "opencv4",
@@ -32,7 +32,9 @@
       "openmp",
       "gstreamer",
       "freetype",
-      "opengl"
+      "opengl",
+      "gtk"
+      
       ]
     }
   ]

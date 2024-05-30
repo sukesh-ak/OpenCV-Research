@@ -76,6 +76,7 @@ void parse(int argc, const char *argv[])
             if (result.count("help"))
             {
                   cout << options.help() << endl;
+                  cout << cv::getBuildInformation() << endl;
                   exit(0);
             }
 
@@ -163,8 +164,6 @@ int main(int argc, const char *argv[])
 #endif
       cout << "Version: " << OpencvRVersion << endl
            << endl;
-
-      cout << cv::getBuildInformation() << endl;
 
       if (cv::cuda::getCudaEnabledDeviceCount() > 0) {
             std::cout << "CUDA is available on this system." << std::endl;
