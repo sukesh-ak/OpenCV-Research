@@ -8,6 +8,11 @@ sudo apt update && sudo apt install build-essential gdb cmake git
 # Clone repo
 git clone --recursive https://github.com/sukesh-ak/OpenCV-Research.git
 
+# ******** On Jetson Jetpack 5.x+ (Tested on Jetson Orin NX) ***
+$ sudo apt install ninja-build
+$ export VCPKG_FORCE_SYSTEM_BINARIES=1
+# *************************************************
+
 # Run bootstrap 
 ./vcpkg/bootstrap.sh
 
