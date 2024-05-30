@@ -1,9 +1,9 @@
-# How to setup OpenCV with Cuda on Jetson 
+# How to build OpenCV with Cuda on Jetson 
 _Currently tested on Jetson Orin NX 16GB with Jetpack 6.x_
 
 <details>
 
-<summary>How to setup OpenCV with Cuda on Jetson [1..4]</summary>
+<summary>How to build OpenCV with Cuda on Jetson [1..4]</summary>
 
 
 ## 1. Install dependencies
