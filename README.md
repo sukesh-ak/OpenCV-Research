@@ -1,6 +1,11 @@
 # How to setup OpenCV with Cuda on Jetson 
 _Currently tested on Jetson Orin NX 16GB with Jetpack 6.x_
 
+<details>
+
+<summary>How to setup OpenCV with Cuda on Jetson [1..4]</summary>
+
+
 ## 1. Install dependencies
 ```bash
 sudo apt-get update
@@ -93,6 +98,7 @@ sudo ldconfig
 ```python
 python3 -c "import cv2 ; print(cv2.getBuildInformation())"
 ```
+</details>
 
 ## 5. Compile and run the application
 
