@@ -7,11 +7,24 @@ sudo apt-get update
 sudo apt-get upgrade -y
 sudo apt-get install -y build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 sudo apt-get install -y python3.8-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
+
+# To support GTK2+OpenGL so you can use namedWindow functions 
+sudo apt-get install libgtkglext1 libgtkglext1-dev
+
+# Currently there is no OpenGL support in OpenCV for GTK3+.
+https://github.com/opencv/opencv/issues/21592
+
+# Need to enable either QT or GTK. For OpenGL support use GTK2.
+
+
+# QT + OPENGL support (fails)
+#sudo apt-get install qtbase5-dev qt5-qmake
+#sudo apt-get install libqt5opengl5-dev libgl1-mesa-dev
 ```
 
 > [!IMPORTANT] 
-> Note down `JETSON_CUDA_ARCH_BIN`
-> `echo $JETSON_CUDA_ARCH_BIN`
+> Note down `JETSON_CUDA_ARCH_BIN`  
+> $ `echo $JETSON_CUDA_ARCH_BIN`
 
 ```bash
 # Above will show one of the following values
@@ -46,13 +59,21 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D CUDA_ARCH_PTX="" \
       -D OPENCV_DNN_CUDA=ON \
       -D WITH_CUDNN=ON \
+      -D WITH_OPENGL=ON \
+      -D OpenGL_GL_PREFERENCE=GLVND \
+      -D WITH_GTK=ON \
+      -D WITH_GTK_2_X=ON \
+      -D WITH_QT=OFF \
+      -D WITH_WAYLAND=OFF \
       -D CUDNN_INCLUDE_DIR=/usr/include \
       -D CUDNN_LIBRARY=/usr/lib/aarch64-linux-gnu/libcudnn.so \
       -D OPENCV_ENABLE_NONFREE=ON \
       -D OPENCV_GENERATE_PKGCONFIG=ON \
       -D WITH_NVCUVID=OFF \
       -D WITH_NVCUVENC=OFF \
-      -D BUILD_EXAMPLES=ON ..
+      -D OPENCV_ENABLE_NONFREE=OFF \
+      -D BUILD_opencv_rgbd=OFF \
+      -D BUILD_EXAMPLES=OFF ..
 
 
 # Once the above is completed, review the final output to make sure CUDA is enabled

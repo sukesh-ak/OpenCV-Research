@@ -1,0 +1,38 @@
+#include <opencv2/opencv.hpp>
+#include <opencv2/cudaarithm.hpp>
+#include <GL/gl.h>
+#include <GL/glu.h>
+#include <iostream>
+
+int main() {
+    // Initialize OpenCV
+    cv::Mat img = cv::imread("windows.jpg", cv::IMREAD_COLOR);
+    if (img.empty()) {
+        std::cerr << "Could not read the image" << std::endl;
+        return 1;
+    }
+
+    // Initialize CUDA
+    cv::cuda::GpuMat d_img;
+    d_img.upload(img);
+
+    // Convert image to grayscale on GPU
+    cv::cuda::GpuMat d_gray;
+    cv::cuda::cvtColor(d_img, d_gray, cv::COLOR_BGR2GRAY);
+
+    // Download result back to CPU
+    cv::Mat gray;
+    d_gray.download(gray);
+
+    // Display the result using OpenCV
+    cv::imshow("Gray Image", gray);
+    cv::waitKey(0);
+
+    // OpenGL context setup and rendering (simplified example)
+    // Note: Proper OpenGL context setup requires a windowing library like GLFW or GLUT
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawPixels(gray.cols, gray.rows, GL_LUMINANCE, GL_UNSIGNED_BYTE, gray.data);
+    glFlush();
+
+    return 0;
+}
