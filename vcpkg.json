@@ -25,9 +25,14 @@
       "png",
       "ffmpeg",
       "tiff",
+      "cuda",
+      "dnn",
+      "dnn-cuda",
+      "contrib",
       "openmp",
       "gstreamer",
-      "freetype"
+      "freetype",
+      "opengl"
       ]
     }
   ]

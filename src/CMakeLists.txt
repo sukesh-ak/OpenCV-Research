@@ -12,7 +12,12 @@ add_executable(${OPENCV_RESEARCH_PROJECT_NAME}
 #         ${OPENCV_RESEARCH_SRC_DIR}/facedetection.cpp
 #         )
 
+ set(OpenCV_DIR "${VCPKG_INSTALLED_DIR}/arm64-linux/share/opencv4")
+
+find_package(CUDA   REQUIRED)
 find_package(OpenCV REQUIRED)
+find_package(CUDA   REQUIRED)
+find_package(CUDNN  REQUIRED)
 
 target_compile_features(${OPENCV_RESEARCH_PROJECT_NAME} PUBLIC
         cxx_std_23)
@@ -21,10 +26,14 @@ target_include_directories(${OPENCV_RESEARCH_PROJECT_NAME} PUBLIC
         ${PROJECT_BINARY_DIR}
         ${OPENCV_RESEARCH_INC_DIR}
         ${OpenCV_INCLUDE_DIRS}
+        ${CUDA_INCLUDE_DIRS}
         )
 
-target_link_libraries(${OPENCV_RESEARCH_PROJECT_NAME} PUBLIC 
+target_link_libraries(
+        ${OPENCV_RESEARCH_PROJECT_NAME} PUBLIC 
         ${OpenCV_LIBS}
+        ${CUDA_LIBRARY}
+        ${CUDNN_LIBRARY}
         )
 
 message(STATUS "--------------Compile Info------------")

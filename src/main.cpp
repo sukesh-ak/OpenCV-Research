@@ -11,6 +11,9 @@
 #include <cxxopts.hpp>
 #include "version.hpp"
 
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/cuda.hpp>
+
 #include "textoverlay.hpp"
 #include "drawoverlay.hpp"
 #include "imageoverlay.hpp"
@@ -160,6 +163,14 @@ int main(int argc, const char *argv[])
 #endif
       cout << "Version: " << OpencvRVersion << endl
            << endl;
+
+      cout << cv::getBuildInformation() << endl;
+
+      if (cv::cuda::getCudaEnabledDeviceCount() > 0) {
+            std::cout << "CUDA is available on this system." << std::endl;
+      } else {
+            std::cout << "CUDA is not available on this system." << std::endl;
+      }
 
       /*
        * attach signal handler
