@@ -44,14 +44,15 @@ cmake --build build
 > # Patch information for vcpkg
 > -- CUDNN_LIBRARY: CUDNN_LIBRARY-NOTFOUND
 > Add `/usr/lib/aarch64-linux-gnu/` to the following file `vcpkg/ports/cudnn/portfile.cmake` in the following line 
- 
-> find_library(CUDNN_LIBRARY NAMES cudnn cudnn8 cudnn7
+
+```
+find_library(CUDNN_LIBRARY NAMES cudnn cudnn8 cudnn7
   HINTS ${CUDA_TOOLKIT_ROOT} $ENV{CUDA_PATH} $ENV{CUDA_TOOLKIT_ROOT_DIR} $ENV{cudnn} $ENV{CUDNN} $ENV{CUDNN_ROOT_DIR} $ENV{CUDA_PATH}/../../../NVIDIA/CUDNN/v9.0 /usr/lib/x86_64-linux-gnu/ /usr/include/aarch64-linux-gnu/ /usr/lib/aarch64-linux-gnu/ /usr/ 
   PATH_SUFFIXES lib lib64 cuda/lib cuda/lib64 lib/x64 cuda/lib/x64 lib/12.3/x64)
 
-> Then increase the version number in `ports/cudnn/vcpkg.json` for `port-version`
-> Same thing in `versions/baseline.json`
-
+# Then increase the version number in `ports/cudnn/vcpkg.json` for `port-version`
+# Same thing in `versions/baseline.json`
+```
 
 
 ## 3rd party Credits
