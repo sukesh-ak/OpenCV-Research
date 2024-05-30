@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 ## vcpkg
-SET(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
+#SET(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
 
 # specify the C++ standard
 set(CMAKE_CXX_STANDARD 23)
@@ -28,6 +28,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 add_subdirectory(src)
+add_subdirectory(samples)
 
 configure_file(
         "${PROJECT_SOURCE_DIR}/version.hpp.in"

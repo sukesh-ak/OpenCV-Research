@@ -1,37 +1,81 @@
-# OpenCV Research 
-_OpenCV samples during Research for AI_
-## Compile using CMAKE
+# How to setup OpenCV with Cuda on Jetson 
+_Currently tested on Jetson Orin NX 16GB with Jetpack 6.x_
+
+## 1. Install dependencies
+```bash
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get install -y build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install -y python3.8-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
 ```
-# On Linux - install g++ / cmake / gdb
-sudo apt update && sudo apt install build-essential gdb cmake git
 
-# Check cmake to make sure, its version is above 2.5
-$ cmake --version
+> [!IMPORTANT] 
+> Note down `JETSON_CUDA_ARCH_BIN`
+> `echo $JETSON_CUDA_ARCH_BIN`
 
-# Upgrade to the latest one
-$ sudo apt remove cmake -y
-$ pip install cmake --upgrade
+```bash
+# Above will show one of the following values
+8.7 => Jetson AGX Orin, Jetson Orin NX, Jetson Orin Nano 
+7.2 => Jetson AGX Xavier, Jetson Xavier NX 
+6.2 => Jetson TX2 
+5.3 => Jetson Nano 
+```
 
-#  Required for gstreamer?
-$ sudo apt install nasm
+## 2. Setup folder and get source from Github
 
-# Clone repo
-git clone --recursive https://github.com/sukesh-ak/OpenCV-Research.git
+```
+# Create based folder
+mkdir ~/opencv_build
+cd ~/opencv_build
 
-# ******** On Jetson Jetpack 5.x+ (Tested on Jetson Orin NX) ***
-$ sudo apt install ninja-build
-$ export VCPKG_FORCE_SYSTEM_BINARIES=1
+# Clone OpenCV version 4.x branch
+# At the time of this documentation, its 4.10
+git clone -b 4.x https://github.com/opencv/opencv.git
+git clone -b 4.x https://github.com/opencv/opencv_contrib.git
 
-# Add the following to library path for CuDNN
-LD_LIBRARY_PATH=/usr/lib/aarch64
-# *************************************************
+# Create folder to compile
+mkdir -p ~/opencv_build/opencv/build && cd ~/opencv_build/opencv/build
 
-# Run bootstrap 
-./vcpkg/bootstrap.sh
+# Generate cmake files and compile samples
+# Make sure to you CUDA_ARCH_BIN version from the above information as per your device
+cmake -D CMAKE_BUILD_TYPE=RELEASE \
+      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D OPENCV_EXTRA_MODULES_PATH=~/opencv_build/opencv_contrib/modules \
+      -D WITH_CUDA=ON \
+      -D CUDA_ARCH_BIN=8.7 \
+      -D CUDA_ARCH_PTX="" \
+      -D OPENCV_DNN_CUDA=ON \
+      -D WITH_CUDNN=ON \
+      -D CUDNN_INCLUDE_DIR=/usr/include \
+      -D CUDNN_LIBRARY=/usr/lib/aarch64-linux-gnu/libcudnn.so \
+      -D OPENCV_ENABLE_NONFREE=ON \
+      -D OPENCV_GENERATE_PKGCONFIG=ON \
+      -D WITH_NVCUVID=OFF \
+      -D WITH_NVCUVENC=OFF \
+      -D BUILD_EXAMPLES=ON ..
 
-# Install all dependencies (will take a while)
-./vcpkg/vcpkg install
 
+# Once the above is completed, review the final output to make sure CUDA is enabled
+```
+
+## 3. Compile, Build and Install
+
+```bash
+# Compile in parellel using all the processor cores on the device
+make -j$(nproc)
+
+sudo make install
+sudo ldconfig   
+```
+
+## 4. Test the OpenCV build using Python
+```python
+python3 -c "import cv2 ; print(cv2.getBuildInformation())"
+```
+
+## 5. Compile and run the application
+
+```bash
 # Compile and build the binary
 cmake . -B build
 cmake --build build
@@ -39,21 +83,3 @@ cmake --build build
 # Run the program
 ./build/<executable_name>
 ```
-> [!IMPORTANT] 
-> ```bash
-> # Patch information for vcpkg
-> -- CUDNN_LIBRARY: CUDNN_LIBRARY-NOTFOUND
-> Add `/usr/lib/aarch64-linux-gnu/` to the following file `vcpkg/ports/cudnn/portfile.cmake` in the following line 
-
-```
-find_library(CUDNN_LIBRARY NAMES cudnn cudnn8 cudnn7
-  HINTS ${CUDA_TOOLKIT_ROOT} $ENV{CUDA_PATH} $ENV{CUDA_TOOLKIT_ROOT_DIR} $ENV{cudnn} $ENV{CUDNN} $ENV{CUDNN_ROOT_DIR} $ENV{CUDA_PATH}/../../../NVIDIA/CUDNN/v9.0 /usr/lib/x86_64-linux-gnu/ /usr/include/aarch64-linux-gnu/ /usr/lib/aarch64-linux-gnu/ /usr/ 
-  PATH_SUFFIXES lib lib64 cuda/lib cuda/lib64 lib/x64 cuda/lib/x64 lib/12.3/x64)
-
-# Then increase the version number in `ports/cudnn/vcpkg.json` for `port-version`
-# Same thing in `versions/baseline.json`
-```
-
-
-## 3rd party Credits
- Library `cxxopts` - [Command line parser](https://github.com/jarro2783/cxxopts)
