@@ -9,14 +9,18 @@ _(Should work on other Debian/Ubuntu distros too including WSL)_
 ```bash
 sudo apt-get update
 sudo apt-get upgrade -y
-sudo apt-get install -y build-essential cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
+sudo apt-get install -y build-essential cmake git
+
+# Make sure you have latest cmake
+
+sudo apt-get install -y libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 sudo apt-get install -y python3.8-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
 
 # To support GTK2+OpenGL so you can use namedWindow functions 
 sudo apt-get install libgtkglext1 libgtkglext1-dev
 
 # No OpenGL support in OpenCV for GTK3+.
-https://github.com/opencv/opencv/issues/21592
+Reference: https://github.com/opencv/opencv/issues/21592
 
 # Need to enable either QT or GTK for UI backend. 
 # For OpenGL support use GTK2.
@@ -42,11 +46,10 @@ $ echo $JETSON_CUDA_ARCH_BIN
 ## 2. Setup folder and get source from Github
 
 ```bash
-# Create based folder
-mkdir ~/opencv_build
-cd ~/opencv_build
+# Create build root folder
+mkdir ~/opencv_build && cd ~/opencv_build
 
-# Clone OpenCV version 4.x branch
+# Clone OpenCV version 4.x branch 
 # At the time of this documentation, its 4.10
 git clone -b 4.x https://github.com/opencv/opencv.git
 git clone -b 4.x https://github.com/opencv/opencv_contrib.git
