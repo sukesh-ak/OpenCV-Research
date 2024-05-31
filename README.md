@@ -1,10 +1,9 @@
 # How to build OpenCV with Cuda on Jetson 
-_Currently tested on Jetson Orin NX 16GB with Jetpack 6.x_
-
+*_Currently tested on Jetson Orin NX 16GB with Jetpack 6.x_*  
+_(Should work on other Debian/Ubuntu distros too including WSL)_
 <details>
 
 <summary>How to build OpenCV with Cuda on Jetson [1..4]</summary>
-
 
 ## 1. Install dependencies
 ```bash
@@ -16,23 +15,24 @@ sudo apt-get install -y python3.8-dev python3-numpy libtbb2 libtbb-dev libjpeg-d
 # To support GTK2+OpenGL so you can use namedWindow functions 
 sudo apt-get install libgtkglext1 libgtkglext1-dev
 
-# Currently there is no OpenGL support in OpenCV for GTK3+.
+# No OpenGL support in OpenCV for GTK3+.
 https://github.com/opencv/opencv/issues/21592
 
-# Need to enable either QT or GTK. For OpenGL support use GTK2.
+# Need to enable either QT or GTK for UI backend. 
+# For OpenGL support use GTK2.
 
-
-# QT + OPENGL support (fails)
+# QT + OPENGL support (fails - maybe because QT5 is old)
 #sudo apt-get install qtbase5-dev qt5-qmake
 #sudo apt-get install libqt5opengl5-dev libgl1-mesa-dev
 ```
 
-> [!IMPORTANT] 
-> Note down `JETSON_CUDA_ARCH_BIN`  
-> $ `echo $JETSON_CUDA_ARCH_BIN`
+```bash
+# Note down `JETSON_CUDA_ARCH_BIN` for CMake command  
+$ echo $JETSON_CUDA_ARCH_BIN
+```
 
 ```bash
-# Above will show one of the following values
+# Above command will show one of the following values
 8.7 => Jetson AGX Orin, Jetson Orin NX, Jetson Orin Nano 
 7.2 => Jetson AGX Xavier, Jetson Xavier NX 
 6.2 => Jetson TX2 
@@ -41,7 +41,7 @@ https://github.com/opencv/opencv/issues/21592
 
 ## 2. Setup folder and get source from Github
 
-```
+```bash
 # Create based folder
 mkdir ~/opencv_build
 cd ~/opencv_build
@@ -54,8 +54,8 @@ git clone -b 4.x https://github.com/opencv/opencv_contrib.git
 # Create folder to compile
 mkdir -p ~/opencv_build/opencv/build && cd ~/opencv_build/opencv/build
 
-# Generate cmake files and compile samples
-# Make sure to you CUDA_ARCH_BIN version from the above information as per your device
+# Generate cmake files
+# Use CUDA_ARCH_BIN version from the above information as per your device
 cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D CMAKE_INSTALL_PREFIX=/usr/local \
       -D OPENCV_EXTRA_MODULES_PATH=~/opencv_build/opencv_contrib/modules \
@@ -90,13 +90,17 @@ cmake -D CMAKE_BUILD_TYPE=RELEASE \
 # Compile in parellel using all the processor cores on the device
 make -j$(nproc)
 
+# Install system-wide
 sudo make install
 sudo ldconfig   
 ```
 
 ## 4. Test the OpenCV build using Python
-```python
+```bash
+# Use python command line to dump out buid info
 python3 -c "import cv2 ; print(cv2.getBuildInformation())"
+
+# You can also use jtop info page to verify.
 ```
 </details>
 
@@ -104,9 +108,33 @@ python3 -c "import cv2 ; print(cv2.getBuildInformation())"
 
 ```bash
 # Compile and build the binary
-cmake . -B build
-cmake --build build
+$ cmake . -B build
+$ cmake --build build
 
 # Run the program
-./build/<executable_name>
+$ ./build/<executable_name>
+```
+
+### Samples included
+```bash
+# Draw Text on Default Camera (0)
+$ ./build/bin/opencvr textcam
+
+# Draw Image on Default Camera (0)
+$ ./build/bin/opencvr imgcam
+
+# Draw Shapes in a window
+$ ./build/bin/opencvr shape
+
+# Face detection on Default Camera (0)
+$ ./build/bin/opencvr detect
+```
+
+### From Samples folder
+```bash
+# Cuda build information
+$ ./build/bin/check-cuda
+
+# Using Default Camera (0)
+$ ./build/bin/segment-objects
 ```

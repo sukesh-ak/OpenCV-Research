@@ -75,8 +75,8 @@ void parse(int argc, const char *argv[])
             // Show help
             if (result.count("help"))
             {
-                  cout << options.help() << endl;
                   cout << cv::getBuildInformation() << endl;
+                  cout << options.help() << endl;
                   exit(0);
             }
 
@@ -166,9 +166,9 @@ int main(int argc, const char *argv[])
            << endl;
 
       if (cv::cuda::getCudaEnabledDeviceCount() > 0) {
-            std::cout << "CUDA is available on this system." << std::endl;
+            std::cout << "OPENCV CUDA [ENABLED] on this system." << std::endl;
       } else {
-            std::cout << "CUDA is not available on this system." << std::endl;
+            std::cout << "OPENCV CUDA [DISABLED] on this system." << std::endl;
       }
 
       /*
