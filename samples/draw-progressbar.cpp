@@ -28,14 +28,18 @@ int main() {
         // Generate a random width for the rectangle
         int progressBarWidth = std::rand() % 100 + 1;  // Random width from 1 to 100
 
-        // Create a rectangle to represent the region of interest (ROI)
-        cv::Rect roiRect(progressBarX, progressBarY, progressBarWidth, 20); // Height is fixed to 20 pixels
+        // Create a separate rectangle with transparency
+        cv::Mat transparentRect(frame.size(), CV_8UC4, cv::Scalar(0, 0, 0, 0)); // Ensure the same size as the frame
+        cv::rectangle(transparentRect, 
+                        cv::Rect(progressBarX, progressBarY, progressBarWidth, 20), 
+                        cv::Scalar(0, 255, 0, 150), -1); // 204 for 80% transparency
 
-        // Fill the ROI with a fluorescent green color
-        cv::rectangle(frame, roiRect, cv::Scalar(0, 255, 0), -1);  // -1 for filled rectangle
+        // Blend the transparent rectangle with the frame
+        cv::Mat blendedFrame;
+        cv::addWeighted(frame, 1.0, transparentRect, 0.8, 0.0, blendedFrame);
 
-        // Display the frame with the dynamically changing rectangle
-        cv::imshow("Video with Dynamic Rectangle", frame);
+        // Display the frame with the transparent rectangle
+        cv::imshow("Video with Transparent Rectangle", blendedFrame);
 
         // Break the loop on 'q' key press
         if (cv::waitKey(1) == 'q') {
