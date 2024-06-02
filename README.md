@@ -108,6 +108,10 @@ sudo ldconfig
 python3 -c "import cv2 ; print(cv2.getBuildInformation())"
 
 # You can also use jtop info page to verify.
+
+# In case above python output does not align with cmake setup, use cuda-check sample to confirm
+# After compile run
+$ ./build/bin/cuda-check
 ```
 </details>
 
