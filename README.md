@@ -12,15 +12,19 @@ sudo apt-get upgrade -y
 sudo apt-get install -y build-essential cmake git
 
 # Make sure you have latest cmake
-
 sudo apt-get install -y libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev
 sudo apt-get install -y python3.8-dev python3-numpy libtbb2 libtbb-dev libjpeg-dev libpng-dev libtiff-dev libdc1394-22-dev
 
 # To support GTK2+OpenGL so you can use namedWindow functions 
-sudo apt-get install libgtkglext1 libgtkglext1-dev
+sudo apt-get install libgtkglext1 libgtkglext1-dev 
+
+# To support gstreamer
+sudo apt install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
 
 # No OpenGL support in OpenCV for GTK3+.
-Reference: https://github.com/opencv/opencv/issues/21592
+# Reference: https://github.com/opencv/opencv/issues/21592
+# Port of gtkglext to GTK+ 3 (not tested)
+# https://github.com/tdz/gtkglext
 
 # Need to enable either QT or GTK for UI backend. 
 # For OpenGL support use GTK2.
